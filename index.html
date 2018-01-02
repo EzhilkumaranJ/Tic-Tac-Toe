@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="col-sm-4">
+            <h4>Chat Room Links</h4>
+            <div class="room">
+                <div id="room-links"></div>
+                <form id="roomForm">
+                    <div class="form-group">
+                        <input class="form-control" id="roomid" name="roomid" placeholder="Type room id to join the chat" /><br>
+                        <button type="submit" id="chat-btn" class="btn btn-info">Connect</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div id="game-board">
+                <canvas id="canvas" width="300" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        window.onload = function() {
+            canvas = document.getElementById("canvas");
+            context = canvas.getContext("2d");
+            size = canvas.offsetWidth;
+            square = Math.floor(size/3);
+        };
+        function drawGameBoard() {
+            //Line 1
+            context.beginPath();
+            context.moveTo(square, 0); //defines starting point of line 1
+            context.lineTo(square, 300); //ending point of line 1
+            context.stroke();
+            // //Line 2
+            context.beginPath();
+            context.moveTo(square * 2, 0);
+            context.lineTo(square * 2, 300);
+            context.stroke();
+            // //Line 3
+            context.beginPath();
+            context.moveTo(0, square);
+            context.lineTo(300, square);
+            context.stroke();
+            //Line 4
+            context.beginPath();
+            context.moveTo(0, square*2);
+            context.lineTo(300, square*2);
+            context.stroke();
+
+        }
+
+        $('#roomForm').submit(function (event) {
+            event.preventDefault();
+            currentRoom = $('input[name=roomid]').val();
+
+            socket.emit("connect-to-room", {'room': currentRoom});
+            $('input[name=roomid]').val('');
+        });
+
+        socket.on('connection-message', function (data) {
+            var message = data.msg;
+            if (message == "Display board") {
+                drawGameBoard();
+            }
+        });
+    </script>
+</body>
+</html>
