@@ -7,7 +7,8 @@
 </head>
 <body>
     <div class="container">
-        <div class="col-sm-4">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
             <h4>Chat Room Links</h4>
             <div class="room">
                 <div id="room-links"></div>
@@ -19,11 +20,8 @@
                 </form>
             </div>
         </div>
-        <div class="col-sm-8">
-            <div id="game-board">
-                <canvas id="canvas" width="300" height="300"></canvas>
-            </div>
-        </div>
+        <div class="col-sm-2"></div>
+        <canvas id="canvas" width="300" height="300"></canvas>
     </div>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -59,6 +57,24 @@
             context.stroke();
 
         }
+
+        canvas.addEventListener('click', function(event){
+//            debugger;
+            console.log('canvas clicked');
+            console.log(event);
+            console.log(event.pageX);
+            console.log(event.pageY);
+            console.log(canvas.offsetLeft);
+            console.log(canvas.offsetTop);
+            var x = event.pageX - canvas.offsetLeft;
+            var y = event.pageY - canvas.offsetTop;
+            var positionX = Math.floor(x / 100);
+            var positionY = Math.floor(y / 100);
+            console.log(x);
+            console.log(y);
+            console.log(positionX);
+            console.log(positionY);
+        });
 
         $('#roomForm').submit(function (event) {
             event.preventDefault();
