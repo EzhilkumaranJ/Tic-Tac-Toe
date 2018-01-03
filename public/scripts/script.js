@@ -140,8 +140,10 @@ canvas.addEventListener('click', function(event){
 
     positionX = Math.floor(x / 100);
     positionY = Math.floor(y / 100);
+    console.log(positionX);
+    console.log(positionY);
 
-    if (playerTurn === true && gameBoard[positionX][positionY] === undefined) {
+    if (playerTurn === true && !gameBoard[positionX][positionY]) {
         // Setting player turn as false even before waiting for the server to make sure user don't click twice
         playerTurn = false;
 
@@ -197,11 +199,13 @@ socket.on('game-state', function (data) {
         for (var j = 0; j <= 2; j++) {
             if (gameBoard[i][j] === 1) {
                 drawCross(i, j);
-            } else if(gameBoard[i][j] === 0) {
+            } else if(gameBoard[i][j] === 2) {
                 drawCircle(i, j);
             }
         }
     }
+
+    document.getElementById('gameState').innerText = gameState;
 
     if (playerTurn) {
         document.getElementById('turnMsg').innerText = "Your Turn";

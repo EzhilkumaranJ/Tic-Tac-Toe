@@ -54,7 +54,7 @@ io.on('connection', function (socket) {
             thisRoom.firstPlayerTurn = false;
         } else {
             currentPlayer = 2;
-            thisRoom.board[cellX][cellY] = 0;
+            thisRoom.board[cellX][cellY] = 2;
             thisRoom.firstPlayerTurn = true;
         }
 
@@ -62,70 +62,70 @@ io.on('connection', function (socket) {
         // Calculating game result
         thisRoom.state = null;
         // For rows
-        if(gameBoard[0][0] === 1 && gameBoard[1][0] === 1 && gameBoard[2][0] === 1) {
-            thisRoom.state = "Won";
-            playerWon = 1;
-        }
-        if(gameBoard[0][0] === 0 && gameBoard[1][0] === 0 && gameBoard[2][0] === 0) {
-            thisRoom.state = "Won";
-            playerWon = 2;
-        }
-        if(gameBoard[0][1] === 1 && gameBoard[1][1] === 1 && gameBoard[2][1] === 1) {
-            thisRoom.state = "Won";
-            playerWon = 1;
-        }
-        if(gameBoard[0][1] === 0 && gameBoard[1][1] === 0 && gameBoard[2][1] === 0) {
-            thisRoom.state = "Won";
-            playerWon = 2;
-        }
-        if(gameBoard[0][2] === 1 && gameBoard[1][2] === 1 && gameBoard[2][2] === 1) {
-            thisRoom.state = "Won";
-            playerWon = 1;
-        }
-        if(gameBoard[0][2] === 0 && gameBoard[1][2] === 0 && gameBoard[2][2] === 0) {
-            thisRoom.state = "Won";
-            playerWon = 2;
-        }
-        // For columns
         if(gameBoard[0][0] === 1 && gameBoard[0][1] === 1 && gameBoard[0][2] === 1) {
-            thisRoom.state = "Won";
+            thisRoom.state = "won";
             playerWon = 1;
         }
-        if(gameBoard[0][0] === 0 && gameBoard[0][1] === 0 && gameBoard[0][2] === 0) {
-            thisRoom.state = "Won";
+        if(gameBoard[0][0] === 2 && gameBoard[0][1] === 2 && gameBoard[0][2] === 2) {
+            thisRoom.state = "won";
             playerWon = 2;
         }
         if(gameBoard[1][0] === 1 && gameBoard[1][1] === 1 && gameBoard[1][2] === 1) {
             thisRoom.state = "Won";
             playerWon = 1;
         }
-        if(gameBoard[1][0] === 0 && gameBoard[1][1] === 0 && gameBoard[1][2] === 0) {
+        if(gameBoard[1][0] === 2 && gameBoard[1][1] === 2 && gameBoard[1][2] === 2) {
             thisRoom.state = "Won";
             playerWon = 2;
         }
         if(gameBoard[2][0] === 1 && gameBoard[2][1] === 1 && gameBoard[2][2] === 1) {
-            thisRoom.state = "Won";
+            thisRoom.state = "won";
             playerWon = 1;
         }
-        if(gameBoard[2][0] === 0 && gameBoard[2][1] === 0 && gameBoard[2][2] === 0) {
-            thisRoom.state = "Won";
+        if(gameBoard[2][0] === 2 && gameBoard[2][1] === 2 && gameBoard[2][2] === 2) {
+            thisRoom.state = "won";
+            playerWon = 2;
+        }
+        // For columns
+        if(gameBoard[0][0] === 1 && gameBoard[1][0] === 1 && gameBoard[2][0] === 1) {
+            thisRoom.state = "won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][0] === 2 && gameBoard[1][0] === 2 && gameBoard[2][0] === 2) {
+            thisRoom.state = "won";
+            playerWon = 2;
+        }
+        if(gameBoard[0][1] === 1 && gameBoard[1][1] === 1 && gameBoard[2][1] === 1) {
+            thisRoom.state = "won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][1] === 2 && gameBoard[1][1] === 2 && gameBoard[2][1] === 2) {
+            thisRoom.state = "won";
+            playerWon = 2;
+        }
+        if(gameBoard[0][2] === 1 && gameBoard[1][2] === 1 && gameBoard[2][2] === 1) {
+            thisRoom.state = "won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][2] === 2 && gameBoard[1][2] === 2 && gameBoard[2][2] === 2) {
+            thisRoom.state = "won";
             playerWon = 2;
         }
         // For diagonals
         if(gameBoard[0][0] === 1 && gameBoard[1][1] === 1 && gameBoard[2][2] === 1) {
-            thisRoom.state = "Won";
+            thisRoom.state = "won";
             playerWon = 1;
         }
-        if(gameBoard[0][0] === 0 && gameBoard[1][1] === 0 && gameBoard[2][2] === 0) {
-            thisRoom.state = "Won";
+        if(gameBoard[0][0] === 2 && gameBoard[1][1] === 2 && gameBoard[2][2] === 2) {
+            thisRoom.state = "won";
             playerWon = 2;
         }
-        if(gameBoard[2][0] === 1 && gameBoard[1][1] === 1 && gameBoard[0][2] === 1) {
-            thisRoom.state = "Won";
+        if(gameBoard[0][2] === 1 && gameBoard[1][1] === 1 && gameBoard[2][0] === 1) {
+            thisRoom.state = "won";
             playerWon = 1;
         }
-        if(gameBoard[2][0] === 0 && gameBoard[1][1] === 0 && gameBoard[0][2] === 0) {
-            thisRoom.state = "Won";
+        if(gameBoard[0][2] === 2 && gameBoard[1][1] === 2 && gameBoard[2][0] === 2) {
+            thisRoom.state = "won";
             playerWon = 2;
         }
 
