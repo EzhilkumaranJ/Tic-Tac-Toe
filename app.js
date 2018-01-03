@@ -45,8 +45,8 @@ io.on('connection', function (socket) {
     socket.on('selection', function(selectionData) {
         console.log(selectionData);
         var thisRoom = rooms[selectionData.room];
-        var cellX = selectionData.cell[X];
-        var cellY = selectionData.cell[Y];
+        var cellX = [selectionData.cell.x];
+        var cellY = [selectionData.cell.y];
 
         if (thisRoom['player1'] === socket) {
             currentPlayer = 1;
@@ -58,10 +58,119 @@ io.on('connection', function (socket) {
             thisRoom.firstPlayerTurn = true;
         }
 
+        var gameBoard = thisRoom.board;
         // Calculating game result
+        thisRoom.state = null;
+        // For rows
+        if(gameBoard[0][0] === 1 && gameBoard[1][0] === 1 && gameBoard[2][0] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][0] === 0 && gameBoard[1][0] === 0 && gameBoard[2][0] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+        if(gameBoard[0][1] === 1 && gameBoard[1][1] === 1 && gameBoard[2][1] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][1] === 0 && gameBoard[1][1] === 0 && gameBoard[2][1] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+        if(gameBoard[0][2] === 1 && gameBoard[1][2] === 1 && gameBoard[2][2] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][2] === 0 && gameBoard[1][2] === 0 && gameBoard[2][2] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+        // For columns
+        if(gameBoard[0][0] === 1 && gameBoard[0][1] === 1 && gameBoard[0][2] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][0] === 0 && gameBoard[0][1] === 0 && gameBoard[0][2] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+        if(gameBoard[1][0] === 1 && gameBoard[1][1] === 1 && gameBoard[1][2] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[1][0] === 0 && gameBoard[1][1] === 0 && gameBoard[1][2] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+        if(gameBoard[2][0] === 1 && gameBoard[2][1] === 1 && gameBoard[2][2] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[2][0] === 0 && gameBoard[2][1] === 0 && gameBoard[2][2] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+        // For diagonals
+        if(gameBoard[0][0] === 1 && gameBoard[1][1] === 1 && gameBoard[2][2] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[0][0] === 0 && gameBoard[1][1] === 0 && gameBoard[2][2] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+        if(gameBoard[2][0] === 1 && gameBoard[1][1] === 1 && gameBoard[0][2] === 1) {
+            thisRoom.state = "Won";
+            playerWon = 1;
+        }
+        if(gameBoard[2][0] === 0 && gameBoard[1][1] === 0 && gameBoard[0][2] === 0) {
+            thisRoom.state = "Won";
+            playerWon = 2;
+        }
+
+        if (thisRoom.state !== 'won') {
+            // Check for game draw
+            var draw = check_draw(thisRoom.board);
+            // If game is not draw then it is in_progress
+            if (!draw) {
+                thisRoom.state = 'in_progress'
+            } else {
+                thisRoom.state = 'draw';
+            }
+        }
+
+        var socket1 = thisRoom['player1'];
+        var socket2 = thisRoom['player2'];
+        socket1.emit(
+            'game-state', {
+                "playerTurn": thisRoom.firstPlayerTurn,
+                "board": thisRoom.board,
+                "state": thisRoom.state
+            });
+        socket2.emit(
+            'game-state', {
+                "playerTurn": !thisRoom.firstPlayerTurn,
+                "board": thisRoom.board,
+                "state": thisRoom.state
+            });
     });
 
 });
+
+check_draw = function(board) {
+    // Iterate through all the cells in the board
+    // Check if all the cells are filled
+    // If all cells are filled, then return true else return false
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
+            if (board[i][j] === undefined) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
 
 var checkPlayer = function(room) {
     var thisRoom = rooms[room];

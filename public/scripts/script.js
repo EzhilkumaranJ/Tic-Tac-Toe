@@ -187,3 +187,31 @@ socket.on('connection-message', function (data) {
         document.getElementById('inputSign').innerText = "O";
     }
 });
+
+socket.on('game-state', function (data) {
+    playerTurn = data.playerTurn;
+    gameBoard = data.board;
+    gameState = data.state;
+
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
+            if (gameBoard[i][j] === 1) {
+                drawCross(i, j);
+            } else if(gameBoard[i][j] === 0) {
+                drawCircle(i, j);
+            }
+        }
+    }
+
+    if (playerTurn) {
+        document.getElementById('turnMsg').innerText = "Your Turn";
+    } else {
+        document.getElementById('turnMsg').innerText = "Waiting";
+    }
+
+    if (playerNumber === 1) {
+        document.getElementById('inputSign').innerText = "X";
+    } else {
+        document.getElementById('inputSign').innerText = "O";
+    }
+});
