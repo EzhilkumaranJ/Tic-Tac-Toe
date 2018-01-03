@@ -7,6 +7,8 @@ var path = require('path');
 
 var filePath = path.join(__dirname, ".", 'index.html');
 
+app.use(express.static('public'));
+
 app.get('/', function(request, response){
     response.sendFile(filePath);
 });
@@ -47,8 +49,8 @@ var checkPlayer = function(room) {
         console.log("Game starts");
         var socket1 = rooms[room]['player1'];
         var socket2 = rooms[room]['player2'];
-        socket1.emit('connection-message', {"msg": "Display board"});
-        socket2.emit('connection-message', {"msg": "Display board"});
+        socket1.emit('connection-message', {"msg": "Display board", "player": 1});
+        socket2.emit('connection-message', {"msg": "Display board", "player": 2});
     } else {
         console.log("Waiting");
     }
