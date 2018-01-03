@@ -42,15 +42,52 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on('selection', function(selectionData) {
+        console.log(selectionData);
+        var thisRoom = rooms[selectionData.room];
+        var cellX = selectionData.cell[X];
+        var cellY = selectionData.cell[Y];
+
+        if (thisRoom['player1'] === socket) {
+            currentPlayer = 1;
+            thisRoom.board[cellX][cellY] = 1;
+            thisRoom.firstPlayerTurn = false;
+        } else {
+            currentPlayer = 2;
+            thisRoom.board[cellX][cellY] = 0;
+            thisRoom.firstPlayerTurn = true;
+        }
+
+        // Calculating game result
+    });
+
 });
 
 var checkPlayer = function(room) {
-    if (_.has(rooms[room], 'player1') && _.has(rooms[room], 'player2')) {
+    var thisRoom = rooms[room];
+    if (_.has(thisRoom, 'player1') && _.has(thisRoom, 'player2')) {
         console.log("Game starts");
-        var socket1 = rooms[room]['player1'];
-        var socket2 = rooms[room]['player2'];
-        socket1.emit('connection-message', {"msg": "Display board", "player": 1});
-        socket2.emit('connection-message', {"msg": "Display board", "player": 2});
+
+        thisRoom.firstPlayerTurn = true;
+        thisRoom.board = [[], [], []];
+        thisRoom.state = "in_progress";
+
+        var socket1 = thisRoom['player1'];
+        var socket2 = thisRoom['player2'];
+        socket1.emit(
+            'connection-message', {
+                "player": 1,
+                "playerTurn": true,
+                "board": thisRoom.board,
+                "state": thisRoom.state
+            });
+        socket2.emit(
+            'connection-message', {
+                "player": 2,
+                "playerTurn": false,
+                "board": thisRoom.board,
+                "state": thisRoom.state
+            });
     } else {
         console.log("Waiting");
     }

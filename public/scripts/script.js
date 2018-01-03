@@ -1,6 +1,11 @@
 var socket = io();
 
 var playerNumber;
+var positionX;
+var positionY;
+var playerTurn;
+var gameBoard;
+var gameState;
 
 window.onload = function() {
     canvas = document.getElementById("canvas");
@@ -32,8 +37,46 @@ function drawGameBoard() {
 
 }
 
-function drawCircle(cellX, cellY) {
+function drawCircle(positionX, positionY) {
+    var cellX, cellY;
     var radius = 25;
+
+    if (positionX === 0 && positionY === 0) {
+        cellX = 50;
+        cellY = 50;
+    }
+    if(positionX === 1 && positionY === 0) {
+        cellX = 150;
+        cellY = 50;
+    }
+    if(positionX === 2 && positionY === 0) {
+        cellX = 250;
+        cellY = 50;
+    }
+    if(positionX === 0 && positionY === 1) {
+        cellX = 50;
+        cellY = 150;
+    }
+    if(positionX === 1 && positionY === 1) {
+        cellX = 150;
+        cellY = 150;
+    }
+    if(positionX === 2 && positionY === 1) {
+        cellX = 250;
+        cellY = 150;
+    }
+    if(positionX === 0 && positionY === 2) {
+        cellX = 50;
+        cellY = 250;
+    }
+    if(positionX === 1 && positionY === 2) {
+        cellX = 150;
+        cellY = 250;
+    }
+    if(positionX === 2 && positionY === 2) {
+        cellX = 250;
+        cellY = 250;
+    }
 
     context.beginPath();
     context.arc(cellX, cellY, radius, 0, 2 * Math.PI, false);
@@ -43,7 +86,37 @@ function drawCircle(cellX, cellY) {
     context.stroke();
 }
 
-function drawCross(cell1X, cell1Y, cell2X, cell2Y, cell3X, cell3Y, cell4X, cell4Y) {
+function drawCross(positionX, positionY) {
+    var cell1X, cell1Y, cell2X, cell2Y, cell3X, cell3Y, cell4X, cell4Y;
+
+    if (positionX === 0 && positionY === 0) {
+        cell1X = 25, cell1Y = 25, cell2X = 75, cell2Y = 75, cell3X = 75, cell3Y = 25, cell4X = 25, cell4Y = 75;
+    }
+    if(positionX === 1 && positionY === 0) {
+        cell1X = 125, cell1Y = 25, cell2X = 175, cell2Y = 75, cell3X = 175, cell3Y = 25, cell4X = 125, cell4Y = 75;
+    }
+    if(positionX === 2 && positionY === 0) {
+        cell1X = 225, cell1Y = 25, cell2X = 275, cell2Y = 75, cell3X = 275, cell3Y = 25, cell4X = 225, cell4Y = 75;
+    }
+    if(positionX === 0 && positionY === 1) {
+        cell1X = 25, cell1Y = 125, cell2X = 75, cell2Y = 175, cell3X = 75, cell3Y = 125, cell4X = 25, cell4Y = 175;
+    }
+    if(positionX === 1 && positionY === 1) {
+        cell1X = 125, cell1Y = 125, cell2X = 175, cell2Y = 175, cell3X = 175, cell3Y = 125, cell4X = 125, cell4Y = 175;
+    }
+    if(positionX === 2 && positionY === 1) {
+        cell1X = 225, cell1Y = 125, cell2X = 275, cell2Y = 175, cell3X = 275, cell3Y = 125, cell4X = 225, cell4Y = 175;
+    }
+    if(positionX === 0 && positionY === 2) {
+        cell1X = 25, cell1Y = 225, cell2X = 75, cell2Y = 275, cell3X = 75, cell3Y = 225, cell4X = 25, cell4Y = 275;
+    }
+    if(positionX === 1 && positionY === 2) {
+        cell1X = 125, cell1Y = 225, cell2X = 175, cell2Y = 275, cell3X = 175, cell3Y = 225, cell4X = 125, cell4Y = 275;
+    }
+    if(positionX === 2 && positionY === 2) {
+        cell1X = 225, cell1Y = 225, cell2X = 275, cell2Y = 275, cell3X = 275, cell3Y = 225, cell4X = 225, cell4Y = 275;
+    }
+
     // line 1
     context.beginPath();
     context.moveTo(cell1X, cell1Y);
@@ -64,48 +137,26 @@ canvas.addEventListener('click', function(event){
     console.log('canvas clicked');
     var x = event.pageX - canvas.offsetLeft;
     var y = event.pageY - canvas.offsetTop;
-    var positionX = Math.floor(x / 100);
-    var positionY = Math.floor(y / 100);
-    console.log(x);
-    console.log(y);
-    console.log(positionX);
-    console.log(positionY);
 
-    if(positionX == 0 && positionY == 0) {
-//                drawCircle(50, 50);
-        drawCross(25, 25, 75, 75, 75, 25, 25, 75);
-    }
-    if(positionX == 1 && positionY == 0) {
-//                drawCircle(150, 50);
-        drawCross(125, 25, 175, 75, 175, 25, 125, 75);
-    }
-    if(positionX == 2 && positionY == 0) {
-//                drawCircle(250, 50);
-        drawCross(225, 25, 275, 75, 275, 25, 225, 75);
-    }
-    if(positionX == 0 && positionY == 1) {
-//                drawCircle(50, 150);
-        drawCross(25, 125, 75, 175, 75, 125, 25, 175);
-    }
-    if(positionX == 1 && positionY == 1) {
-//                drawCircle(150, 150);
-        drawCross(125, 125, 175, 175, 175, 125, 125, 175);
-    }
-    if(positionX == 2 && positionY == 1) {
-//                drawCircle(250, 150);
-        drawCross(225, 125, 275, 175, 275, 125, 225, 175);
-    }
-    if(positionX == 0 && positionY == 2) {
-//                drawCircle(50, 250);
-        drawCross(25, 225, 75, 275, 75, 225, 25, 275);
-    }
-    if(positionX == 1 && positionY == 2) {
-//                drawCircle(150, 250);
-        drawCross(125, 225, 175, 275, 175, 225, 125, 275);
-    }
-    if(positionX == 2 && positionY == 2) {
-//                drawCircle(250, 250);
-        drawCross(225, 225, 275, 275, 275, 225, 225, 275);
+    positionX = Math.floor(x / 100);
+    positionY = Math.floor(y / 100);
+
+    if (playerTurn === true && gameBoard[positionX][positionY] === undefined) {
+        // Setting player turn as false even before waiting for the server to make sure user don't click twice
+        playerTurn = false;
+
+        if (playerNumber === 1) {
+            drawCross(positionX, positionY);
+        } else {
+            drawCircle(positionX, positionY);
+        }
+        socket.emit('selection', {
+            'cell': {
+                'x': positionX,
+                'y': positionY
+            },
+            'room': currentRoom
+        });
     }
 });
 
@@ -118,9 +169,21 @@ $('#roomForm').submit(function (event) {
 });
 
 socket.on('connection-message', function (data) {
-    var message = data.msg;
-    if (message == "Display board") {
-        drawGameBoard();
-    }
+    drawGameBoard();
     playerNumber = data.player;
+    playerTurn = data.playerTurn;
+    gameBoard = data.board;
+    gameState = data.state;
+
+    if (playerTurn) {
+        document.getElementById('turnMsg').innerText = "Your Turn";
+    } else {
+        document.getElementById('turnMsg').innerText = "Waiting";
+    }
+
+    if (playerNumber === 1) {
+        document.getElementById('inputSign').innerText = "X";
+    } else {
+        document.getElementById('inputSign').innerText = "O";
+    }
 });
