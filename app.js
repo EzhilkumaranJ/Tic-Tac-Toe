@@ -71,11 +71,11 @@ io.on('connection', function (socket) {
             playerWon = 2;
         }
         if(gameBoard[1][0] === 1 && gameBoard[1][1] === 1 && gameBoard[1][2] === 1) {
-            thisRoom.state = "Won";
+            thisRoom.state = "won";
             playerWon = 1;
         }
         if(gameBoard[1][0] === 2 && gameBoard[1][1] === 2 && gameBoard[1][2] === 2) {
-            thisRoom.state = "Won";
+            thisRoom.state = "won";
             playerWon = 2;
         }
         if(gameBoard[2][0] === 1 && gameBoard[2][1] === 1 && gameBoard[2][2] === 1) {
