@@ -1,18 +1,9 @@
-var socket = io();
-
-var playerNumber;
-var positionX;
-var positionY;
-var playerTurn;
-var gameBoard;
-var gameState;
-
 window.onload = function() {
-    canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
     size = canvas.offsetWidth;
     square = Math.floor(size/3);
 };
+
 function drawGameBoard() {
     //Line 1
     context.beginPath();
@@ -34,7 +25,6 @@ function drawGameBoard() {
     context.moveTo(0, square*2);
     context.lineTo(300, square*2);
     context.stroke();
-
 }
 
 function drawCircle(positionX, positionY) {
@@ -132,90 +122,3 @@ function drawCross(positionX, positionY) {
     context.strokeStyle = '#ff0000';
     context.stroke();
 }
-
-canvas.addEventListener('click', function(event){
-    console.log('canvas clicked');
-    var x = event.pageX - canvas.offsetLeft;
-    var y = event.pageY - canvas.offsetTop;
-
-    positionX = Math.floor(x / 100);
-    positionY = Math.floor(y / 100);
-    console.log(positionX);
-    console.log(positionY);
-
-    if (playerTurn === true && !gameBoard[positionX][positionY]) {
-        // Setting player turn as false even before waiting for the server to make sure user don't click twice
-        playerTurn = false;
-
-        if (playerNumber === 1) {
-            drawCross(positionX, positionY);
-        } else {
-            drawCircle(positionX, positionY);
-        }
-        socket.emit('selection', {
-            'cell': {
-                'x': positionX,
-                'y': positionY
-            },
-            'room': currentRoom
-        });
-    }
-});
-
-$('#roomForm').submit(function (event) {
-    event.preventDefault();
-    currentRoom = $('input[name=roomid]').val();
-
-    socket.emit("connect-to-room", {'room': currentRoom});
-    $('input[name=roomid]').val('');
-});
-
-socket.on('connection-message', function (data) {
-    drawGameBoard();
-    playerNumber = data.player;
-    playerTurn = data.playerTurn;
-    gameBoard = data.board;
-    gameState = data.state;
-
-    if (playerTurn) {
-        document.getElementById('turnMsg').innerText = "Your Turn";
-    } else {
-        document.getElementById('turnMsg').innerText = "Waiting";
-    }
-
-    if (playerNumber === 1) {
-        document.getElementById('inputSign').innerText = "X";
-    } else {
-        document.getElementById('inputSign').innerText = "O";
-    }
-});
-
-socket.on('game-state', function (data) {
-    playerTurn = data.playerTurn;
-    gameBoard = data.board;
-    gameState = data.state;
-
-    for (var i = 0; i <= 2; i++) {
-        for (var j = 0; j <= 2; j++) {
-            if (gameBoard[i][j] === 1) {
-                drawCross(i, j);
-            } else if(gameBoard[i][j] === 2) {
-                drawCircle(i, j);
-            }
-        }
-    }
-
-    document.getElementById('gameState').innerText = gameState;
-
-    if (playerTurn) {
-        document.getElementById('turnMsg').innerText = "Your Turn";
-    } else {
-        document.getElementById('turnMsg').innerText = "Waiting";
-    }
-
-    if (playerNumber === 1) {
-        document.getElementById('inputSign').innerText = "X";
-    } else {
-        document.getElementById('inputSign').innerText = "O";
-    }
-});

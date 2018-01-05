@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
-            <h4>Chat Room Links</h4>
-            <div class="room">
-                <div id="room-links"></div>
-                <form id="roomForm">
-                    <div class="form-group">
-                        <input class="form-control" id="roomid" name="roomid" placeholder="Type room id to join the chat" /><br>
-                        <button type="submit" id="chat-btn" class="btn btn-info">Connect</button>
-                    </div>
-                </form>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="stylesheets/main.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <div id="room">
+                    <h4>Chat Room Link</h4>
+                    <div id="room-links"></div>
+                    <form id="roomForm">
+                        <div class="form-group">
+                            <input class="form-control" name="roomid" placeholder="Type/Paste/Generate room id to join the game room" /><br>
+                            <button type="submit" id="connect-button" class="btn btn-info">Connect</button>
+                            <button type="button" id="generate-room-id" class="btn btn-info">Generate room link</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="waitingState" style="display: none;">
+                    <h3>Game Room Connected</h3>
+                    <h4>Room Link: <span id="room-link"></span></h4>
+                    <h6>First Player connected. Waiting for second player to connect...</h6>
+                </div>
             </div>
+            <div class="col-sm-2"></div>
+            <canvas id="canvas" width="300" height="300"></canvas>
+            <div id="gameState"></div>
+            <div id="turnMsg"></div>
         </div>
-        <div class="col-sm-2"></div>
-        <canvas id="canvas" width="300" height="300"></canvas>
-        <div id="gameState"></div>
-        <div id="turnMsg"></div>
-        <div id="inputSign"></div>
-    </div>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="scripts/script.js"></script>
-</body>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="scripts/ui.js"></script>
+        <script src="scripts/renderer.js"></script>
+        <script src="scripts/main.js"></script>
+    </body>
 </html>
