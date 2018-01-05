@@ -44,6 +44,11 @@ io.on('connection', function (socket) {
         gameServer.broadcastResult(socket, selectionData);
     });
 
+    socket.on('new-game', function (data) {
+        var roomId = data.roomId;
+        // start new game
+        gameServer.newGame(roomId);
+    });
 });
 
 http.listen(8000, function () {

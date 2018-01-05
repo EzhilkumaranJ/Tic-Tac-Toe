@@ -205,4 +205,9 @@ gameServer.broadcastResult = function (socket, selectionData) {
         });
 };
 
+gameServer.newGame = function (room) {
+    var thisRoom = gameServer.gameRoom[roomId];
+    gameServer.startGame(thisRoom);
+};
+
 module.exports = gameServer;

@@ -61,7 +61,7 @@ canvas.addEventListener('click', function(event){
     console.log(positionX);
     console.log(positionY);
 
-    if (playerTurn === true && !gameBoard[positionX][positionY] && (gameState === "ready" || gameState == "in_progress")) {
+    if (playerTurn === true && !gameBoard[positionX][positionY] && (gameState === "ready" || gameState === "in_progress")) {
         // Setting player turn as false even before waiting for the server to make sure user don't click twice
         playerTurn = false;
 
@@ -96,13 +96,14 @@ socket.on('game-state', function (data) {
         }
     }
 
-    if (gameState == "won") {
+    if (gameState === "won") {
         turnMsg.innerText = "";
         if (playerWon) {
             gameStateMsg.innerText = "You Won";
         } else {
             gameStateMsg.innerText = "You Lost";
         }
+        $('#newGame').show();
     } else {
         gameStateMsg.innerText = gameState;
 
@@ -112,4 +113,9 @@ socket.on('game-state', function (data) {
             turnMsg.innerText = "Waiting";
         }
     }
+});
+
+newGameBtn.addEventListener('click', function () {
+    $('#newGame').hide();
+    socket.emit('new-game', {'roomId': currentRoom});
 });

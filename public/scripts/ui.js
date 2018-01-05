@@ -4,6 +4,8 @@ var roomLink = document.getElementById('room-link');
 var gameStateMsg = document.getElementById('gameState');
 var turnMsg = document.getElementById('turnMsg');
 var canvas = document.getElementById("canvas");
+var newGame = document.getElementById("newGame");
+var newGameBtn = document.getElementById("new-game-btn");
 
 var randomString = function() {
     var text = "";
