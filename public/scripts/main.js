@@ -128,7 +128,8 @@ socket.on('game-state', function (data) {
 
 newGameBtn.addEventListener('click', function () {
     socket.emit('new-game', {'roomId': currentRoom});
-    socket.on('new-game', function () {
-        $('#newGame').hide();
-    });
+});
+
+socket.on('new-game', function () {
+    $('#newGame').hide();
 });
