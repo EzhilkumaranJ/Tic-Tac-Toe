@@ -38,7 +38,8 @@
 #turnMsg {
     position: absolute;
     color: #1c7293;
-    top: 500px;
+    bottom: 100px;
+    /*top: 500px;*/
     left: 45%;
     font-weight: 800;
     font-family: "Droid Serif";
@@ -46,6 +47,7 @@
 
 #newGame {
     position: absolute;
-    top: 550px;
+    bottom: 100px;
+    /*top: 550px;*/
     left: 45%;
 }
