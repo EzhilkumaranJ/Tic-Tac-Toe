@@ -8,21 +8,44 @@
 }
 
 .ready {
-    color: orange;
+    color: #ee7600;
 }
 
 .inProgress {
-    color: yellow;
+    color: #eeed00;
 }
 
 .won {
-    color: green;
+    color: #006400;
 }
 
 .lost {
-    color: red;
+    color: #ee0001;
 }
 
 .draw {
-    color: blue;
+    color: #7600ee;
+}
+
+#gameState {
+    position: absolute;
+    top: 50px;
+    left: 43%;
+    font-weight: 800;
+    font-family: "Droid Serif";
+}
+
+#turnMsg {
+    position: absolute;
+    color: #1c7293;
+    top: 500px;
+    left: 45%;
+    font-weight: 800;
+    font-family: "Droid Serif";
+}
+
+#newGame {
+    position: absolute;
+    top: 550px;
+    left: 45%;
 }

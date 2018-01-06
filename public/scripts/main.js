@@ -116,6 +116,7 @@ socket.on('game-state', function (data) {
         if (gameState === "draw") {
             $('#stateText').removeClass('ready').removeClass('inProgress').addClass('draw').text("DRAW");
             $('#turnMsg').hide();
+            $('#newGame').show();
         }
         if (playerTurn) {
             $('#turnText').text("YOUR TURN");
