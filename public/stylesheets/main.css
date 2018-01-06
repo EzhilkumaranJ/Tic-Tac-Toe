@@ -1,0 +1,28 @@
+#canvas {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.ready {
+    color: orange;
+}
+
+.inProgress {
+    color: yellow;
+}
+
+.won {
+    color: green;
+}
+
+.lost {
+    color: red;
+}
+
+.draw {
+    color: blue;
+}

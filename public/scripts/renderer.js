@@ -5,26 +5,35 @@ window.onload = function() {
 };
 
 function drawGameBoard() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.lineWidth = 0;
+    context.strokeStyle = '#ffffff';
     //Line 1
     context.beginPath();
     context.moveTo(square, 0); //defines starting point of line 1
     context.lineTo(square, 300); //ending point of line 1
+    context.strokeStyle = '#333';
     context.stroke();
     //Line 2
     context.beginPath();
     context.moveTo(square * 2, 0);
     context.lineTo(square * 2, 300);
+    context.strokeStyle = '#333';
     context.stroke();
     //Line 3
     context.beginPath();
     context.moveTo(0, square);
     context.lineTo(300, square);
+    context.strokeStyle = '#333';
     context.stroke();
     //Line 4
     context.beginPath();
     context.moveTo(0, square*2);
     context.lineTo(300, square*2);
+    context.strokeStyle = '#333';
     context.stroke();
+    // reset
+    context.strokeStyle = '#ffffff';
 }
 
 function drawCircle(positionX, positionY) {
@@ -72,8 +81,11 @@ function drawCircle(positionX, positionY) {
     context.arc(cellX, cellY, radius, 0, 2 * Math.PI, false);
     context.fillStyle = 'pink';
     context.fill();
+    context.lineWidth = 2;
     context.strokeStyle = '#003300';
     context.stroke();
+    // reset
+    context.strokeStyle = '#fff';
 }
 
 function drawCross(positionX, positionY) {
@@ -111,14 +123,16 @@ function drawCross(positionX, positionY) {
     context.beginPath();
     context.moveTo(cell1X, cell1Y);
     context.lineTo(cell2X, cell2Y);
-    context.lineWidth = 5;
+    context.lineWidth = 2;
     context.strokeStyle = '#ff0000';
     context.stroke();
     // line 2
     context.beginPath();
     context.moveTo(cell3X, cell3Y);
     context.lineTo(cell4X, cell4Y);
-    context.lineWidth = 5;
+    context.lineWidth = 2;
     context.strokeStyle = '#ff0000';
     context.stroke();
+    // reset
+    context.strokeStyle = '#fff';
 }

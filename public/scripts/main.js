@@ -41,12 +41,17 @@ gameRoomConnectBtn.addEventListener('click', function () {
         gameState = data.state;
         playerNumber = data.player;
 
-        gameStateMsg.innerText = gameState;
+        $('#gameState').show();
+        $('#turnMsg').show();
+
+        if (gameState === "ready") {
+            $('#stateText').removeClass('won').removeClass('lost').removeClass('draw').removeClass('inProgress').addClass('ready').text("READY");
+        }
 
         if (playerTurn) {
-            turnMsg.innerText = "Your Turn";
+            $('#turnText').text("YOUR TURN");
         } else {
-            turnMsg.innerText = "Waiting";
+            $('#turnText').text("WAITING");
         }
     });
 });
@@ -97,25 +102,32 @@ socket.on('game-state', function (data) {
     }
 
     if (gameState === "won") {
-        turnMsg.innerText = "";
+        $('#turnMsg').hide();
         if (playerWon) {
-            gameStateMsg.innerText = "You Won";
+            $('#stateText').removeClass('ready').removeClass('inProgress').addClass('won').text("YOU WON");
         } else {
-            gameStateMsg.innerText = "You Lost";
+            $('#stateText').removeClass('ready').removeClass('inProgress').addClass('lost').text("YOU LOST");
         }
         $('#newGame').show();
     } else {
-        gameStateMsg.innerText = gameState;
-
+        if (gameState === "in_progress") {
+            $('#stateText').removeClass('ready').addClass('inProgress').text("IN PROGRESS");
+        }
+        if (gameState === "draw") {
+            $('#stateText').removeClass('ready').removeClass('inProgress').addClass('draw').text("DRAW");
+            $('#turnMsg').hide();
+        }
         if (playerTurn) {
-            turnMsg.innerText = "Your Turn";
+            $('#turnText').text("YOUR TURN");
         } else {
-            turnMsg.innerText = "Waiting";
+            $('#turnText').text("WAITING");
         }
     }
 });
 
 newGameBtn.addEventListener('click', function () {
-    $('#newGame').hide();
     socket.emit('new-game', {'roomId': currentRoom});
+    socket.on('new-game', function () {
+        $('#newGame').hide();
+    });
 });

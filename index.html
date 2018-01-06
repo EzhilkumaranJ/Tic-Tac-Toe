@@ -28,13 +28,22 @@
                 </div>
             </div>
             <div class="col-sm-2"></div>
-            <canvas id="canvas" width="300" height="300"></canvas>
-            <div id="gameState"></div>
-            <div id="turnMsg"></div>
-            <div id="newGame" style="display:none">
-                <button type="button" class="btn btn-info" id="new-game-btn">New Game?</button>
-            </div>
         </div>
+        <!--game state message-->
+        <div id="gameState" style="display:none;">
+            <h3 class="text-center">Game State: <span class="ready" id="stateText"></span></h3>
+        </div>
+        <!--canvas-->
+        <canvas id="canvas" width="300" height="300"></canvas>
+        <!--turn message-->
+        <div id="turnMsg" style="display:none">
+            <h3 id="turnText" class="text-center"></h3>
+        </div>
+        <!--New game button-->
+        <div id="newGame" style="display:none">
+            <button type="button" class="btn btn-info" id="new-game-btn">New Game?</button>
+        </div>
+        <!--External scripts-->
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="scripts/ui.js"></script>
