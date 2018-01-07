@@ -67,6 +67,7 @@ io.on('connection', function (socket) {
         gameServer.newGame(roomId);
     });
 
+    // Check Room function
     function checkRoom(socket) {
         var rooms = gameServer.gameRoom;
         console.log(rooms);

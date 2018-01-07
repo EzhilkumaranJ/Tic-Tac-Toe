@@ -6,6 +6,7 @@ gameServer.gameRoom = {};
 
 gameServer.createRoom = function(roomId) {
     console.log("createRoom function", roomId);
+    // Check room id exists or not in the gameRoom
     if (!_.has(gameServer.gameRoom, roomId)) {
         gameServer.gameRoom[roomId] = {};
     }
@@ -15,6 +16,9 @@ gameServer.addPlayers = function (roomId, player) {
     var thisRoom = gameServer.gameRoom[roomId];
     console.log(thisRoom);
 
+    // check if player1/player2 exist when one user connects to the server
+    // if not store the socket object of the first/second user to player1/player2
+    // Else wait for the othe player to join
     if (!_.has(thisRoom, "player1")) {
 
         thisRoom["player1"] = player;
@@ -31,6 +35,8 @@ gameServer.addPlayers = function (roomId, player) {
 gameServer.startGame = function (roomId) {
     var thisRoom = gameServer.gameRoom[roomId];
 
+    // Check if both players are connected to the room or not
+    // If so, then they see the gameboard and starts to play
     if (_.has(thisRoom, 'player1') && _.has(thisRoom, 'player2')) {
         var socket1 = thisRoom['player1'];
         var socket2 = thisRoom['player2'];
@@ -71,6 +77,7 @@ gameServer.startGame = function (roomId) {
     }
 };
 
+// Processing data on the player selection
 gameServer.processInput = function (socket, selectionData) {
     var thisRoom = gameServer.gameRoom[selectionData.room];
     var cellX = selectionData.cell.x;
@@ -85,6 +92,7 @@ gameServer.processInput = function (socket, selectionData) {
     }
 };
 
+// Calculating result
 gameServer.calculateResult = function (selectionData) {
     var thisRoom = gameServer.gameRoom[selectionData.room];
     var gameBoard = thisRoom.board;

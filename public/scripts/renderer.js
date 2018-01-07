@@ -4,20 +4,22 @@ window.onload = function() {
     square = Math.floor(size/3);
 };
 
+// Draw GameBoard
 function drawGameBoard() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.lineWidth = 0;
+    // pre reset
     context.strokeStyle = '#ffffff';
     //Line 1
     context.beginPath();
-    context.moveTo(square, 0); //defines starting point of line 1
-    context.lineTo(square, 300); //ending point of line 1
+    context.moveTo(square, 0);    //defines starting point of line 1
+    context.lineTo(square, 300);  //ending point of line 1
     context.strokeStyle = '#333';
     context.stroke();
     //Line 2
     context.beginPath();
-    context.moveTo(square * 2, 0);
-    context.lineTo(square * 2, 300);
+    context.moveTo(square * 2, 0);   //defines starting point of line 2
+    context.lineTo(square * 2, 300); //ending point of line 2
     context.strokeStyle = '#333';
     context.stroke();
     //Line 3
@@ -32,10 +34,12 @@ function drawGameBoard() {
     context.lineTo(300, square*2);
     context.strokeStyle = '#333';
     context.stroke();
+
     // reset
     context.strokeStyle = '#ffffff';
 }
 
+// Draw Circle
 function drawCircle(positionX, positionY) {
     var cellX, cellY;
     var radius = 25;
@@ -88,6 +92,7 @@ function drawCircle(positionX, positionY) {
     context.strokeStyle = '#fff';
 }
 
+// Draw Cross
 function drawCross(positionX, positionY) {
     var cell1X, cell1Y, cell2X, cell2Y, cell3X, cell3Y, cell4X, cell4Y;
 
