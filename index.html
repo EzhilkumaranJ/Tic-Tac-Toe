@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="stylesheets/main.css">
     </head>
     <body>
+        <!-- Room form-->
         <div class="container">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
@@ -47,7 +48,11 @@
         <div id="newGame" style="display:none;">
             <button type="button" class="btn btn-info" id="new-game-btn">New Game?</button>
         </div>
-
+        <!-- Room Full Message-->
+        <div id="room-full" style="display:none;">
+            <h2 class="text-center">The game room in which you want to connect is already full.</h2>
+            <h3>Please refresh the page to join other game room or invite other player to join your game room.</h3>
+        </div>
         <!--External scripts-->
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script src="/socket.io/socket.io.js"></script>

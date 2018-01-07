@@ -9,64 +9,64 @@ var gameState;
 var currentRoom;
 var playerWon;
 
-gameRoomConnectBtn.addEventListener('click', function () {
-    // Submit form
-    $('#roomForm').submit(function (event) {
-        event.preventDefault();
-        currentRoom = $('input[name=roomid]').val();
-        // On submitting form, emit a event with room id
-        socket.emit('connect-to-room', {
-            'roomId': currentRoom
-        });
+// Submit form
+$('#roomForm').submit(function (event) {
+    event.preventDefault();
+    currentRoom = $('input[name=roomid]').val();
+    // On submitting form, emit a event with room id
+    socket.emit('connect-to-room', {
+        'roomId': currentRoom
     });
+});
 
-    // listening on wait event which displays waiting state for first connected user
-    // When only one player connects
-    socket.on('wait', function (data) {
-        gameState = data.gameState;
-        currentRoom = data.room;
+// listening on wait event which displays waiting state for first connected user
+// When only one player connects
+socket.on('wait', function (data) {
+    $("#room-full").hide();
+    gameState = data.gameState;
+    currentRoom = data.room;
 
-        if (gameState === "waiting") {
-            $('#room').hide();
-            $('#waitingState').show();
-            roomLink.innerText = currentRoom;
-        }
-    });
-
-    // When both player connects
-    socket.on('start', function (data) {
-        console.log("game started");
-        // Resetting the display
+    if (gameState === "waiting") {
         $('#room').hide();
-        $('#canvas').show();
-        $('#waitingState').hide();
-        $('#endGame').hide();
+        $('#waitingState').show();
+        roomLink.innerText = currentRoom;
+    }
+});
 
-        // Draw game board
-        drawGameBoard();
+// When both player connects
+socket.on('start', function (data) {
+    console.log("game started");
+    // Resetting the display
+    $('#room').hide();
+    $('#canvas').show();
+    $('#waitingState').hide();
+    $('#endGame').hide();
+    $("#room-full").hide();
 
-        // populating the global variables with values come from start event handler
-        playerTurn = data.playerTurn;
-        gameBoard = data.board;
-        gameState = data.state;
-        playerNumber = data.player;
+    // Draw game board
+    drawGameBoard();
 
-        // Display game state message and turn message to both the player
-        // Current game status
-        $('#gameState').show();
-        // whose turn
-        $('#turnMsg').show();
+    // populating the global variables with values come from start event handler
+    playerTurn = data.playerTurn;
+    gameBoard = data.board;
+    gameState = data.state;
+    playerNumber = data.player;
 
-        if (gameState === "ready") {
-            $('#stateText').removeClass('won').removeClass('lost').removeClass('draw').removeClass('inProgress').addClass('ready').text("READY");
-        }
+    // Display game state message and turn message to both the player
+    // Current game status
+    $('#gameState').show();
+    // whose turn
+    $('#turnMsg').show();
 
-        if (playerTurn) {
-            $('#turnText').text("YOUR TURN");
-        } else {
-            $('#turnText').text("WAITING");
-        }
-    });
+    if (gameState === "ready") {
+        $('#stateText').removeClass('won').removeClass('lost').removeClass('draw').removeClass('inProgress').addClass('ready').text("READY");
+    }
+
+    if (playerTurn) {
+        $('#turnText').text("YOUR TURN");
+    } else {
+        $('#turnText').text("WAITING");
+    }
 });
 
 // When player clicks on canvas cell
@@ -168,4 +168,8 @@ socket.on('end-game', function (data) {
     $('#waitingState').show();
     $('#endGame').show();
     $('#newGame').hide();
+});
+
+socket.on('room-full', function (data) {
+    $("#room-full").show();
 });

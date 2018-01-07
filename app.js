@@ -28,10 +28,12 @@ io.on('connection', function (socket) {
         gameServer.createRoom(roomId);
 
         // Add Players
-        gameServer.addPlayers(roomId, socket);
+        var result = gameServer.addPlayers(roomId, socket);
 
         // Start the game
-        gameServer.startGame(roomId);
+        if (result) {
+            gameServer.startGame(roomId);
+        }
 
     });
 

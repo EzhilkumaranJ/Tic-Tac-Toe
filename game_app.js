@@ -20,15 +20,17 @@ gameServer.addPlayers = function (roomId, player) {
     // if not store the socket object of the first/second user to player1/player2
     // Else wait for the othe player to join
     if (!_.has(thisRoom, "player1")) {
-
         thisRoom["player1"] = player;
+        return true;
 
     } else if (!_.has(thisRoom, "player2")) {
-
         thisRoom["player2"] = player;
+        return true;
 
     } else {
         console.log("Room is full");
+        player.emit("room-full", {'roomId': roomId});
+        return false;
     }
 };
 
