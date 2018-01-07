@@ -29,6 +29,7 @@ gameServer.addPlayers = function (roomId, player) {
 
     } else {
         console.log("Room is full");
+        // Emit the room full event to the players who want to join the room in which two players are already exist
         player.emit("room-full", {'roomId': roomId});
         return false;
     }

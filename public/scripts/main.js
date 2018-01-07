@@ -170,6 +170,7 @@ socket.on('end-game', function (data) {
     $('#newGame').hide();
 });
 
+// When third player trying to connect to the room which is full, listen on the room-full event
 socket.on('room-full', function (data) {
     $("#room-full").show();
 });
