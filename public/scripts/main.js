@@ -32,7 +32,9 @@ gameRoomConnectBtn.addEventListener('click', function () {
     socket.on('start', function (data) {
         console.log("game started");
         $('#room').hide();
+        $('#canvas').show();
         $('#waitingState').hide();
+        $('#endGame').hide();
 
         drawGameBoard();
 
@@ -131,5 +133,15 @@ newGameBtn.addEventListener('click', function () {
 });
 
 socket.on('new-game', function () {
+    $('#newGame').hide();
+});
+
+socket.on('end-game', function (data) {
+    var msg = data.msg;
+    $('#gameState').hide();
+    $('#canvas').hide();
+    $('#turnMsg').hide();
+    $('#waitingState').show();
+    $('#endGame').show();
     $('#newGame').hide();
 });

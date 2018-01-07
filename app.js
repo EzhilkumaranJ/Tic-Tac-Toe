@@ -18,6 +18,7 @@ app.get('/', function(request, response){
 io.on('connection', function (socket) {
     console.log('a user connected');
 
+    // player connect to game room
     socket.on('connect-to-room', function (data) {
         console.log(data);
         var roomId = data.roomId;
@@ -29,10 +30,25 @@ io.on('connection', function (socket) {
         // Add Players
         gameServer.addPlayers(roomId, socket);
 
-        // Initialize the game
+        // Start the game
         gameServer.startGame(roomId);
+
     });
 
+    // player disconnects
+    socket.on('disconnect', function () {
+        var room = checkRoom(socket);
+        console.log(room);
+        if (room) {
+            // Remove client
+            gameServer.removeClient(room, socket);
+
+            // Start the game
+            gameServer.startGame(_.findKey(gameServer.gameRoom, room));
+        }
+    });
+
+    // player select a cell
     socket.on('playerSelection', function (selectionData) {
         // process on the player selected data
         gameServer.processInput(socket, selectionData);
@@ -44,11 +60,23 @@ io.on('connection', function (socket) {
         gameServer.broadcastResult(socket, selectionData);
     });
 
+    // player click on new game
     socket.on('new-game', function (data) {
         var roomId = data.roomId;
         // start new game
         gameServer.newGame(roomId);
     });
+
+    function checkRoom(socket) {
+        var rooms = gameServer.gameRoom;
+        console.log(rooms);
+        for (var room in rooms) {
+            if (rooms[room]['player1'] === socket || rooms[room]['player2'] === socket) {
+                return rooms[room];
+            }
+        }
+        return null;
+    }
 });
 
 http.listen(8000, function () {

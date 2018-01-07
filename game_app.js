@@ -215,4 +215,26 @@ gameServer.newGame = function (roomId) {
     gameServer.startGame(roomId);
 };
 
+gameServer.removeClient = function (room, socket) {
+    var player;
+    var client;
+    console.log(room);
+    console.log(socket);
+    if (room['player1'] === socket) {
+        player = 'player1';
+    } else {
+        player = 'player2';
+    }
+    delete room[player];
+    room.endMsg = "end";
+
+    if (_.has(room, 'player1')) {
+        client = room['player1'];
+    } else {
+        client = room['player2'];
+    }
+
+    client.emit('end-game', {'msg': room.endMsg});
+};
+
 module.exports = gameServer;
