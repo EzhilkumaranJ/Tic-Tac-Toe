@@ -231,20 +231,25 @@ gameServer.removeClient = function (room, socket) {
     var client;
     console.log(room);
     console.log(socket);
+    // check either player1 disconnects or player2
     if (room['player1'] === socket) {
         player = 'player1';
     } else {
         player = 'player2';
     }
+    // delete the respective player
     delete room[player];
+    // delete message send to client
     room.endMsg = "end";
 
+    // check which clients exist
     if (_.has(room, 'player1')) {
         client = room['player1'];
     } else {
         client = room['player2'];
     }
 
+    // check if client with the same game room exists or both disconnected
     if (client) {
         client.emit('end-game', {'msg': room.endMsg});
         return true;

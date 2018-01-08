@@ -72,6 +72,7 @@ io.on('connection', function (socket) {
     });
 
     // Check Room function
+    // Return rooms or null after checking the player who disconnects belong to which room
     function checkRoom(socket) {
         var rooms = gameServer.gameRoom;
         console.log(rooms);
