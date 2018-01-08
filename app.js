@@ -43,10 +43,12 @@ io.on('connection', function (socket) {
         console.log(room);
         if (room) {
             // Remove client
-            gameServer.removeClient(room, socket);
+            var result = gameServer.removeClient(room, socket);
 
             // Start the game
-            gameServer.startGame(_.findKey(gameServer.gameRoom, room));
+            if (result) {
+                gameServer.startGame(_.findKey(gameServer.gameRoom, room));
+            }
         }
     });
 

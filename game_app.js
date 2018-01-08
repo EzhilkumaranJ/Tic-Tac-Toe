@@ -245,7 +245,11 @@ gameServer.removeClient = function (room, socket) {
         client = room['player2'];
     }
 
-    client.emit('end-game', {'msg': room.endMsg});
+    if (client) {
+        client.emit('end-game', {'msg': room.endMsg});
+        return true;
+    }
+    return false;
 };
 
 module.exports = gameServer;
