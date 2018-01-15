@@ -37,6 +37,8 @@ The game is played by two player connected to the same Room.
 
 * In game_app.js, all the game related logics are described.
 
+Click [here](IMPLEMENTATION.md) for more details on the implementation
+
 ## How to start
 
 Clone this repo or download the source code.
