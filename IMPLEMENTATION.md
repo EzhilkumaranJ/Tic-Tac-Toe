@@ -156,3 +156,21 @@ Provides these functions:
 Contains the handles to all the UI elements (i.e. the dom elements)
 Handles the click on the "generate room" button and generates a new room id.
 Has a helper function `randomString` which generates a 12 digit random string.
+
+## Game-play Flow
+A typical game session looks like this:
+* Player 1 opens the website.
+* Player 1 generates a new room id.
+* Player 1 connects to the room.
+* Player 1 sends the room id to his/her friend and waits for his/her friend to join.
+* Player 2 opens the website.
+* Player 2 enters the room id given by the player 1.
+* Player 2 connects to the room
+* Player 1 sees that player 2 has connected and it is his/her turn.
+* Player 1 makes his selection.
+* Player 2 sees the Player 1's selection and makes his move.
+* Player 1 sees the Player2's move and the game continues this way.
+* Whenever either player has won or the game is in draw, the messages are displayed on both the player's screens.
+* Now either of the player can start a new game by clicking on the "New Game"
+
+If any player closes the website after joining the room, the other player will see the message that his/her opponent has left the room.
