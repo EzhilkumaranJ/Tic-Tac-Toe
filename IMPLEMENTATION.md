@@ -1,6 +1,6 @@
 # IMPLEMENTATION
 
-Being a multiplayer room-based game over the internet, this game has two major sections: Frontend and Backend. 
+Being a multi-player room-based game over the internet, this game has two major sections: Frontend and Backend. 
 
 ## Backend
 Backend has two important sections. The network layer and the Game Logic Layer.
@@ -9,21 +9,21 @@ The network layer is responsible for the connection between the browser and the 
 Two types of network connections are used:
 * HTTP
     * HTTP is used to serve index.html and static files (images, javascript, css etc.)
-* Websocket
-    *  Websocket is used to maintain the duplex connnection between the server and the client. 
-    All the messages (during the gameplay) from the browser are sent over the websocket.
-    All the messages from the server to update the browser are also sent over the websocket.
+* WebSocket
+    * WebSocket is used to maintain the duplex connection between the server and the client. 
+    * All the messages (during the game-play) from the browser are sent over the WebSocket.
+    * All the messages from the server to update the browser are also sent over the WebSocket.
 
 ### Structure
 The backend is divided mainly in two files:
 #### app.js
 This file is responsible for the network layer.
 
-This file serves the index.html file and servers the static files using expressjs.
+This file serves the index.html file and servers the static files using express.js.
 
 Static files are served using ExpressJS's static middleware.
 
-Webscoket server waits for the connection from the browser and setups the callbacks for different type of message events.
+WebSocket server waits for the connection from the browser and setups the callbacks for different type of message events.
 
 ##### Events:
 * "connect-to-room"
@@ -43,9 +43,9 @@ Webscoket server waits for the connection from the browser and setups the callba
         * Remove the player from all the rooms the socket belongs to.
 #### game_app.js
 gameServer - This is the main global variable which encompasses everything.
-gameServer.gameRoom - contains all the rooms based on the roomid as the key
+gameServer.gameRoom - contains all the rooms based on the room-id as the key
 * gameServer.createRoom
-    * This function creates the room based on roomId, if the room doesn't exist.
+    * This function creates the room based on roomId, if the room does not exist.
 * gameServer.addPlayers
     * Takes two arguments: roomId, player(socket)
     * Connects the player as "player1" or "player2" in that order.
@@ -81,7 +81,7 @@ gameServer.gameRoom - contains all the rooms based on the roomid as the key
                 "playerWon": <true|false>, // If the game state is 'won', this value represents who won the game
              }
 * gameServer.newGame
-    * Resets the baord
+    * Resets the board
     * Emits the 'new_game' message to both players
     * Resets the state
     * Starts the game
@@ -91,3 +91,68 @@ gameServer.gameRoom - contains all the rooms based on the roomid as the key
     * If other player is still connected, sends the 'end-game' message to the other player.
 
 ## Frontend
+Frontend makes use of HTML5 Canvas api to draw the pixels that the user sees as the game board. Canvas is used in 2D context.
+
+Frontend has 4 main sections:
+* index.html (HTML)
+* main.js
+* renderer.js
+* ui.js
+
+### index.html
+This contains all the elements of the UI.
+UI Elements:
+    * room-links
+        * Used to display the room id
+    * roomForm
+        * Contains the room id input and the room id generator button
+    *  waitingState
+        * Initially hidden, This is used to show the waiting for other player info.
+    * endGame
+        * This is the used to show the message when the game has ended because of other player leaving the game.
+    * gameState
+        * Displays the current state of the game
+    * canvas
+        * This is the main HTML5 Canvas on which the game board is drawn.
+    * turnMsg
+        * Displays whether it is the user's turn or not.
+    * newGame
+        * The "New Game" button appears when a game has finished, and gives the players a chance to start another game without reconnecting to the server.
+    * room-full
+        * This is displayed to the user when the room is already full in which the user is trying to join.
+### main.js
+Connects the client to backend using WebSocket.
+Provides these functionality: 
+    * Sends the `connect-to-room` message on room form submission.
+    * Displays the "waiting" status on `wait` event.
+    * On `start` event:
+        * Displays the canvas
+        * Hides un-necessary elements
+        * Triggers the draw of game board
+    * Handles `click` on the canvas
+        * Calculates the position of the click event compared to the actual board.
+        * If it is the player's turn sends the `playerSelection` message to the server.
+    * Listens for `game-state` message from the server
+        * Triggers the display of user selection on the board.
+        * Hide/Show the appropriate sections based on game state.
+    * Sends the `new-game` message to the server on `click` of "new-game" button.
+    * Hides the "new-game" button when the `new-game` message comes from the server.
+    * On `end-game` message, hides everything and displays "Waiting State"
+    * Displays the "room-full" on the `room-full` event from the server.
+### renderer.js
+renderer.js is responsible for actual draw on the canvas.
+On complete load of the window does these:
+Initialize some global variables
+Sets the context of the canvas to 2D
+Provides these functions:
+* drawGameBoard
+    * Clears the canvas
+    * Draws the vertical and horizontal lines
+* drawCircle
+    * Takes the cell position and draws a circle in that cell using arc
+* drawCross
+    * Takes the cell position and draws a cross "X" in that cell
+### ui.js
+Contains the handles to all the UI elements (i.e. the dom elements)
+Handles the click on the "generate room" button and generates a new room id.
+Has a helper function `randomString` which generates a 12 digit random string.
