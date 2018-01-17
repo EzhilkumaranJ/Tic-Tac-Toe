@@ -157,6 +157,8 @@ Contains the handles to all the UI elements (i.e. the dom elements)
 Handles the click on the "generate room" button and generates a new room id.
 Has a helper function `randomString` which generates a 12 digit random string.
 
+![Execution Flow](execution_flow.png)
+
 ## Game-play Flow
 A typical game session looks like this:
 * Player 1 opens the website.
@@ -174,3 +176,5 @@ A typical game session looks like this:
 * Now either of the player can start a new game by clicking on the "New Game"
 
 If any player closes the website after joining the room, the other player will see the message that his/her opponent has left the room.
+
+![Gameplay Flow](gameplay_flow.png)
